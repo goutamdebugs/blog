@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f0f0f0"/>
+  <path d="M100 100L300 100L300 200L100 200Z" fill="#ddd"/>
+  <circle cx="200" cy="150" r="50" fill="#ccc"/>
+  <text x="200" y="160" text-anchor="middle" fill="#666" font-family="Arial" font-size="16">
+    Tech Blog
+  </text>
+</svg>

@@ -11,29 +11,23 @@ import BlogList from '@/components/blog/BlogList';
 import ArticleModal from '@/components/modal/ArticleModal';
 
 export default function Home() {
-  // State for blog posts
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // State for search and filter
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
   
-  // State for modal
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch data on component mount
   useEffect(() => {
     async function loadPosts() {
       try {
         setLoading(true);
         const data = await fetchBlogPosts();
         setPosts(data.blogs);
-        
-        // Extract unique categories
         const uniqueCategories = Array.from(
           new Set(data.blogs.map(post => post.category))
         );
@@ -45,22 +39,12 @@ export default function Home() {
         setLoading(false);
       }
     }
-    
     loadPosts();
   }, []);
 
-  // Filter and search logic
   const filteredPosts = posts.filter(post => {
-    // Category filter
-    if (selectedCategory && post.category !== selectedCategory) {
-      return false;
-    }
-    
-    // Search filter
-    if (searchQuery.trim() === '') {
-      return true;
-    }
-    
+    if (selectedCategory && post.category !== selectedCategory) return false;
+    if (searchQuery.trim() === '') return true;
     const query = searchQuery.toLowerCase();
     return (
       post.title.toLowerCase().includes(query) ||
@@ -69,13 +53,11 @@ export default function Home() {
     );
   });
 
-  // Handle post click
   const handlePostClick = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
   };
 
-  // Handle modal close
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedPost(null);
@@ -83,101 +65,76 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading articles...</p>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-gray-500 animate-pulse">Curating tech stories...</p>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-red-500 text-4xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Oops! Something went wrong
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (error) return <div className="p-10 text-center text-red-500">{error}</div>;
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
       <Header />
       
-      <main className="min-h-screen">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Welcome to Tech Blog
-            </h1>
-            <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Discover the latest in technology, programming, and software development.
-              Explore {posts.length} curated articles from industry experts.
-            </p>
-          </div>
-        </section>
-        
-        {/* Search and Filter Section */}
-        <section className="py-8 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4 space-y-8">
-            <div className="max-w-3xl mx-auto">
-              <SearchBar
-                value={searchQuery}
-                onChange={setSearchQuery}
-              />
+      <main className="flex-grow">
+        {/* =====  ===== */}
+        <section className="relative bg-gray-900 pt-24 pb-32 overflow-hidden">
+          {/* background thik */}
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90"></div>
+          
+          <div className="container mx-auto px-6 relative z-10 text-center">
+            <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium">
+              Hi devoloper, let code with chaa
             </div>
             
-            <div className="max-w-6xl mx-auto">
-              <CategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-              />
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+              Welcome to{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                Tech Blog
+              </span>
+            </h1>
+            
+            {/* <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+              Deep dive into software development, AI trends, and coding tutorials.
+              Curated articles for developers, by developers.
+            </p> */}
+            
+            {/* Search Bar */}
+            <div className="mb-12 transform hover:scale-[1.01] transition-transform duration-300">
+              <SearchBar value={searchQuery} onChange={setSearchQuery} />
             </div>
+
+            {/* filter */}
+            <CategoryFilter
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
           </div>
         </section>
-        
-        {/* Articles Section */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="flex justify-between items-center mb-8">
+
+        {/* bolge Grid Section */}
+        <section className="py-20 bg-gray-50 dark:bg-gray-950">
+          <div className="container mx-auto px-6">
+            <div className="flex justify-between items-end mb-10 border-b border-gray-200 dark:border-gray-800 pb-4">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
                 Latest Articles
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Showing {filteredPosts.length} of {posts.length} articles
-              </p>
+              <span className="text-sm font-medium text-gray-500 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+                {filteredPosts.length} posts found
+              </span>
             </div>
             
-            <BlogList
-              posts={filteredPosts}
-              onPostClick={handlePostClick}
-            />
+            <BlogList posts={filteredPosts} onPostClick={handlePostClick} />
           </div>
         </section>
       </main>
       
       <Footer />
-      
-      {/* Modal for Article Details */}
-      <ArticleModal
-        post={selectedPost}
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-      />
-    </>
+      <ArticleModal post={selectedPost} isOpen={isModalOpen} onClose={handleModalClose} />
+    </div>
   );
 }

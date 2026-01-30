@@ -11,7 +11,7 @@ A fast, SEO-optimized tech blog built with **Next.js 15**, **TypeScript**, and *
   - **Styling:** Tailwind CSS v4.0 
   - **Deployment:** Vercel 
 
-## 📈 Lighthouse Audit Results
+## Lighthouse Audit Results
 We achieved excellent Lighthouse scores across all metrics:
 - **SEO:** 100/100 
 - **Accessibility:** 94
@@ -80,4 +80,5 @@ interface BlogPost {
 <img width="1920" height="925" alt="image" src="https://github.com/user-attachments/assets/4e34191d-841b-4822-9394-ca03569deadb" />
 
 <img width="1912" height="980" alt="image" src="https://github.com/user-attachments/assets/25f1a663-a07f-4be4-8542-47e5f76e677d" />
+
 
